@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:padding="5dp">
+
+    <EditText
+        android:id="@+id/item_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_event_item"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="5dp"
+        android:paddingStart="10dp"
+        android:layout_toLeftOf="@+id/item_delete_btn"
+        android:textColor="@android:color/black"
+        android:hint="@string/please_input_search"
+        android:textColorHint="@color/line_grey"/>
+    <ImageView
+        android:id="@+id/item_search_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_search_24_black"
+        android:layout_marginEnd="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"/>
+    <ImageView
+        android:id="@+id/item_delete_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete_24_black"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"/>
+
+</RelativeLayout>

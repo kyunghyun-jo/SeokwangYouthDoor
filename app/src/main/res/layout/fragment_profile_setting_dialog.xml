@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:colorBackground"
+    app:cardElevation="5dp"
+    app:cardCornerRadius="8dp">
+
+    <RelativeLayout
+        android:id="@+id/popup_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            tools:text="Title"
+            android:layout_centerHorizontal="true"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/dialog_title">
+            <ImageView
+                android:id="@+id/item_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_green"
+                android:layout_toLeftOf="@+id/item_attach_btn_layout"/>
+            <LinearLayout
+                android:id="@+id/item_attach_btn_layout"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/item_attach_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="@string/attach_image" />
+                <Button
+                    android:id="@+id/item_deattach_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="14sp"
+                    android:text="@string/delete" />
+            </LinearLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/bottom_btn_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ok"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+            <Button
+                android:id="@+id/btn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="@string/cancel"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

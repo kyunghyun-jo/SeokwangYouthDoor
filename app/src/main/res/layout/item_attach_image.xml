@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_green"
+        android:layout_toLeftOf="@+id/item_attach_btn_layout"/>
+    <LinearLayout
+        android:id="@+id/item_attach_btn_layout"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/item_attach_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="@string/attach_image" />
+        <Button
+            android:id="@+id/item_deattach_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="14sp"
+            android:text="@string/delete" />
+    </LinearLayout>
+
+</RelativeLayout>

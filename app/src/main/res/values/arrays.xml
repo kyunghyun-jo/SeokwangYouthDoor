@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="gender_values" >
+        <item>@string/male</item>
+        <item>@string/female</item>
+    </string-array>
+
+    <string-array name="email_spinner_items" >
+        <item>gmail.com</item>
+        <item>naver.com</item>
+        <item>hanmail.net</item>
+        <item>hotmail.com</item>
+        <item>@string/input_domain</item>
+    </string-array>
+</resources>
