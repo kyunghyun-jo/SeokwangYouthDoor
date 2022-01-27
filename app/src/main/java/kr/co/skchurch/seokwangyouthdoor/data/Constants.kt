@@ -6,7 +6,7 @@ import kr.co.skchurch.seokwangyouthdoor.data.entities.*
 import kr.co.skchurch.seokwangyouthdoor.utils.Util
 
 object Constants {
-    const val IS_TEST_MODE = true
+    const val IS_TEST_MODE = false
     const val LOG_ENABLE = false
 
     const val GENDER_MAN = 0
