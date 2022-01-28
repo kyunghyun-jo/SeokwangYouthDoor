@@ -27,6 +27,7 @@ import kr.co.skchurch.seokwangyouthdoor.data.*
 import kr.co.skchurch.seokwangyouthdoor.databinding.ActivityMainBinding
 import kr.co.skchurch.seokwangyouthdoor.ui.home.HomeFragment
 import kr.co.skchurch.seokwangyouthdoor.ui.memberinfo.MemberInfoCategoryFragment
+import kr.co.skchurch.seokwangyouthdoor.ui.more.GuideActivity
 import kr.co.skchurch.seokwangyouthdoor.ui.more.MoreFragment
 import kr.co.skchurch.seokwangyouthdoor.ui.timetable.TimetableFragment
 import kr.co.skchurch.seokwangyouthdoor.utils.Util
@@ -77,6 +78,11 @@ class MainActivity : AppCompatActivity() {
                 val welcomeMessage = String.format(resources.getString(R.string.welcome_message), it?.name)
                 Toast.makeText(this, welcomeMessage, Toast.LENGTH_SHORT).show()
             }
+        }
+
+        if(SharedPrefManager.getInstance(this).getIsFirstTime() == true) {
+            startActivity(Intent(this, GuideActivity::class.java))
+            SharedPrefManager.getInstance(this).setIsFirstTime(false)
         }
     }
     

@@ -42,4 +42,12 @@ class SharedPrefManager {
             putString("userEmail", email)
         }
     }
+
+    fun getIsFirstTime(): Boolean? = pref?.getBoolean("isFirstTime", true)
+
+    fun setIsFirstTime(isFirstTime: Boolean) {
+        pref?.edit(true) {
+            putBoolean("isFirstTime", isFirstTime)
+        }
+    }
 }

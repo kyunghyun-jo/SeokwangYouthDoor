@@ -93,4 +93,5 @@
     <string name="wrong_password">비밀번호가 틀렸습니다.</string>
     <string name="get_permission_success">권한 설정 성공!</string>
     <string name="get_permission_failed">권한 설정 실패!</string>
+    <string name="exit_guide">가이드 나가기</string>
 </resources>

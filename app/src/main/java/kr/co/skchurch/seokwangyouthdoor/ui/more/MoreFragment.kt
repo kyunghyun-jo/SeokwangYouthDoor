@@ -233,7 +233,7 @@ class MoreFragment : Fragment() {
                 Util.getUUID(), Util.getTimestamp()),
             SimpleEntity(ID_AUTHOR, getString(R.string.info_app_author), "Kyunghyun, Cho", null,
                 Util.getUUID(), Util.getTimestamp()),
-            SimpleEntity(ID_USER_GUIDE, getString(R.string.info_app_guide), getString(R.string.developing), null,
+            SimpleEntity(ID_USER_GUIDE, getString(R.string.info_app_guide), null, null,
                 Util.getUUID(), Util.getTimestamp())
         )
     }
@@ -252,7 +252,7 @@ class MoreFragment : Fragment() {
                         val simpleEntity = data as SimpleEntity
                         when(simpleEntity.id) {
                             ID_USER_GUIDE -> {
-
+                                startActivity(Intent(activity, GuideActivity::class.java))
                             }
                             else -> {}
                         }

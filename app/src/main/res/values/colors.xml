@@ -25,4 +25,5 @@
     <color name="popup_bg">#88000000</color>
     <color name="text_grey_bg">#88FFFFFF</color>
     <color name="popup_bg_shadow">#06CCCCCC</color>
+    <color name="normal_dot_color">#88AAAAAA</color>
 </resources>

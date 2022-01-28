@@ -87,7 +87,7 @@
             android:textSize="17sp"/>
         <EditText
             android:id="@+id/passwordEditTxt"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:hint="@string/input_password"

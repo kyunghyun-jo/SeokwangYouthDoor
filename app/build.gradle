@@ -9,7 +9,7 @@ plugins {
 android {
     compileSdk 30
 
-    def VERSION_NAME = "1.0.0"
+    def VERSION_NAME = "1.0.1"
     def (major, minor, patch) = VERSION_NAME.toLowerCase().replaceAll('-', '').tokenize('.')
     (major, minor, patch) = [major, minor, patch].collect { it.toInteger() }
     def VERSION_CODE = (major * 10000) + (minor * 100) + (patch)
