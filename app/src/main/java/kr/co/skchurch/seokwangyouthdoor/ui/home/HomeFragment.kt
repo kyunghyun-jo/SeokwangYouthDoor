@@ -1,5 +1,6 @@
 package kr.co.skchurch.seokwangyouthdoor.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import com.orhanobut.logger.Logger
 import android.view.LayoutInflater
@@ -12,10 +13,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kr.co.skchurch.seokwangyouthdoor.R
 import kr.co.skchurch.seokwangyouthdoor.adapter.HomeListAdapter
+import kr.co.skchurch.seokwangyouthdoor.data.Constants
+import kr.co.skchurch.seokwangyouthdoor.data.FirebaseConstants
 import kr.co.skchurch.seokwangyouthdoor.data.FirebaseManager
 import kr.co.skchurch.seokwangyouthdoor.data.entities.HomeEntity
 import kr.co.skchurch.seokwangyouthdoor.data.entities.SimpleEntity
 import kr.co.skchurch.seokwangyouthdoor.databinding.FragmentHomeBinding
+import kr.co.skchurch.seokwangyouthdoor.ui.more.calendar.CalendarActivity
 import kr.co.skchurch.seokwangyouthdoor.ui.widget.IDialogCallback
 import kr.co.skchurch.seokwangyouthdoor.ui.widget.MessageDialog
 import kr.co.skchurch.seokwangyouthdoor.utils.Util
@@ -55,7 +59,13 @@ class HomeFragment : Fragment() {
     private fun initViews() = with(binding) {
         adapter = HomeListAdapter(onItemClicked = { position, itemData ->
             Logger.d("HomeList clicked : $position / $itemData")
-            if(itemData.value?.isNotEmpty() == true) showMessageDialog(itemData)
+            if(itemData.value?.isNotEmpty() == true) {
+                if(itemData.value == FirebaseConstants.PREFIX_EVENT) {
+                    val tIntent = Intent(context, CalendarActivity::class.java)
+                    startActivity(tIntent)
+                }
+                else showMessageDialog(itemData)
+            }
         })
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter

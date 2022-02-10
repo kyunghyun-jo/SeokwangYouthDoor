@@ -680,6 +680,41 @@ class FirebaseManager {
         })
     }
 
+    private var tempCallback: IFirebaseCallback? = null
+    fun requestClassBoardDataLength(className: String, callback: IFirebaseCallback) {
+        tempCallback = callback
+        val tempDB = userDB.child(FirebaseConstants.TABLE_CLASS_BOARD).child(className)
+        tempDB?.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Logger.d("requestClassBoardDataLength : ${snapshot.childrenCount}")
+                SeokwangYouthApplication.firebaseBoardSizeMap[className] = snapshot.childrenCount.toInt()
+                tempCallback?.onValueDataChange(snapshot)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Logger.d("requestClassBoardDataLength error : $error")
+            }
+
+        })
+    }
+
+    fun requestFreeBoardDataLength(callback: IFirebaseCallback) {
+        tempCallback = callback
+        val tempDB = userDB.child(FirebaseConstants.TABLE_FREE_BOARD)
+        tempDB?.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Logger.d("requestFreeBoardDataLength : ${snapshot.childrenCount}")
+                SeokwangYouthApplication.firebaseFreeBoardSize = snapshot.childrenCount.toInt()
+                tempCallback?.onValueDataChange(snapshot)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Logger.d("requestFreeBoardDataLength error : $error")
+            }
+
+        })
+    }
+
     lateinit var freeBoardDB: DatabaseReference
     private var freeBoardDBCallback: IFirebaseCallback? = null
 

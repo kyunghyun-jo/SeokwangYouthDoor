@@ -49,6 +49,7 @@ class MoreFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var author: String
+    private lateinit var myClassName: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,6 +60,7 @@ class MoreFragment : Fragment() {
 
         SeokwangYouthApplication.getMyProfile {
             author = it?.name ?: FirebaseManager.instance.getCurrentUser()?.email.orEmpty()
+            myClassName = it?.className!!
         }
 
         initViews()
@@ -173,6 +175,24 @@ class MoreFragment : Fragment() {
             Logger.d("btnInfo click!")
             showMessageDialog()
         }
+    }
+
+    private val moreViewModel by lazy {
+        MoreViewModel()
+    }
+    override fun onResume() {
+        super.onResume()
+        val classNameArr = myClassName.split(",")
+        var isBoardNoti = false
+        classNameArr.forEach { className ->
+            if(moreViewModel.isBoardNoti(className))
+                isBoardNoti = moreViewModel.isBoardNoti(className)
+        }
+        Logger.d("onResume isBoardNoti : $isBoardNoti / isFreeBoardNoti : ${moreViewModel.isFreeBoardNoti()}")
+        binding.btnBoard.btnNotiIcon.visibility =
+            if(isBoardNoti) View.VISIBLE else View.GONE
+        binding.btnFreeBoard.btnNotiIcon.visibility =
+            if(moreViewModel.isFreeBoardNoti()) View.VISIBLE else View.GONE
     }
 
     private fun checkMaster(userEntity: MemberInfoEntity): Boolean {

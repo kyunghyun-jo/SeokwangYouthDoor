@@ -19,6 +19,10 @@ class SeokwangYouthApplication: Application() {
     companion object {
         var context: Context? = null
         var navigationHeight: Int = 0
+        var firebaseBoardSizeMap: HashMap<String, Int> = HashMap()
+        var firebaseFreeBoardSize: Int = 0
+        var dbBoardSizeMap: HashMap<String, Int> = HashMap()
+        var dbFreeBoardSize = 0
         fun getMyProfile(onResult: (MemberInfoEntity?) -> Unit) = GlobalScope.launch(Dispatchers.IO) {
             val myEmail = FirebaseManager.instance.getCurrentUser()?.email
             onResult(AppDatabase.getDatabase().memberInfoDao().getAllData().find {

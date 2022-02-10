@@ -21,6 +21,7 @@ import kr.co.skchurch.seokwangyouthdoor.databinding.ActivitySplashBinding
 import kr.co.skchurch.seokwangyouthdoor.ui.login.LoginActivity
 import kr.co.skchurch.seokwangyouthdoor.ui.memberinfo.MemberCategoryViewModel
 import kr.co.skchurch.seokwangyouthdoor.ui.memberinfo.MemberInfoViewModel
+import kr.co.skchurch.seokwangyouthdoor.ui.more.MoreViewModel
 import kr.co.skchurch.seokwangyouthdoor.ui.more.calendar.CalendarViewModel
 
 class SplashActivity : AppCompatActivity() {
@@ -63,6 +64,8 @@ class SplashActivity : AppCompatActivity() {
         var categoryList = db.memberCategoryDao().getAllData()
         Logger.d("onCreate categoryList : $categoryList")
         ViewModelProvider(this@SplashActivity).get(MemberCategoryViewModel::class.java)
+
+        ViewModelProvider(this@SplashActivity).get(MoreViewModel::class.java)
     }
 
     private fun startApp() {

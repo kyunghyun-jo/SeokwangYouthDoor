@@ -1,10 +1,8 @@
 package kr.co.skchurch.seokwangyouthdoor.adapter
 
 import android.graphics.Color
+import android.view.*
 import com.orhanobut.logger.Logger
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -64,7 +62,10 @@ class MemberInfoCategoryAdapter(val onItemClicked: (Int, SimpleEntity) -> Unit):
         fun bind(entity: SimpleEntity) {
             binding.itemTitleTxt.text = entity.title
             //binding.itemTitleTxt.setTextColor(Color.BLACK)
-            binding.root.setBackgroundColor(binding.root.context.getColor(COLOR_ARR.random()))
+            val bgColor = binding.root.context.getColor(COLOR_ARR.random())
+            binding.root.setBackgroundColor(bgColor)
+            binding.root.tag = bgColor
+            //binding.root.setBackgroundResource(R.drawable.card_item_selector)
             Logger.d("bind MemberCategory entity.title : ${entity.title} / paster : ${binding.root.context.getString(R.string.paster)}")
             if(Util.isOnline(binding.root.context) &&
                 entity.title == binding.root.context.getString(R.string.paster)) {
@@ -80,6 +81,17 @@ class MemberInfoCategoryAdapter(val onItemClicked: (Int, SimpleEntity) -> Unit):
             }
             binding.root.setOnClickListener{
                 onItemClicked(adapterPosition, entity)
+            }
+            binding.root.setOnTouchListener { v, event ->
+                when(event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        v.setBackgroundColor(v.context.getColor(R.color.card_focus_color))
+                    }
+                    else -> {
+                        if(v.tag!=null) v.setBackgroundColor(v.tag.toString().toInt())
+                    }
+                }
+                false
             }
         }
     }

@@ -10,7 +10,8 @@
         android:id="@+id/title_layout"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:padding="10dp"
+        android:paddingVertical="10dp"
+        android:paddingLeft="10dp"
         android:background="?attr/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,22 +25,33 @@
             android:text="@string/title_more"
             android:textColor="@android:color/white"
             android:layout_centerVertical="true"/>
-        <ImageView
+        <RelativeLayout
             android:id="@+id/btn_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_settings_24"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true" />
-        <ImageView
+            android:layout_alignParentEnd="true"
+            android:background="?android:attr/selectableItemBackground">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_settings_24" />
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_search_24"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
             android:layout_toLeftOf="@id/btn_setting"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:background="?android:attr/selectableItemBackground">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_search_24" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <GridLayout

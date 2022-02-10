@@ -198,7 +198,7 @@ class HomeViewModel() : ViewModel() {
                 allEventList.add(HomeEntity(
                     count++, Constants.ITEM_TYPE_NORMAL,
                     Constants.SCHEDULE_TYPE_EVENT.toString() + "^" + event.title + "^" + event.date,
-                    null, null, 0,
+                    FirebaseConstants.PREFIX_EVENT, null, 0,
                     Util.getUUID(), Util.getTimestamp()))
             }
         }
@@ -207,7 +207,7 @@ class HomeViewModel() : ViewModel() {
                 allEventList.add(HomeEntity(
                     count++, Constants.ITEM_TYPE_NORMAL,
                     Constants.SCHEDULE_TYPE_BIRTHDAY.toString() + "^" + member.name + "^" + member.birth,
-                    null, null, 0,
+                    FirebaseConstants.PREFIX_EVENT, null, 0,
                     Util.getUUID(), Util.getTimestamp()))
             }
         }
