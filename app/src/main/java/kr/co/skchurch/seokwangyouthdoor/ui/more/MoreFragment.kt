@@ -60,7 +60,7 @@ class MoreFragment : Fragment() {
 
         SeokwangYouthApplication.getMyProfile {
             author = it?.name ?: FirebaseManager.instance.getCurrentUser()?.email.orEmpty()
-            myClassName = it?.className!!
+            myClassName = if(it?.className == null) "" else it?.className!!
         }
 
         initViews()

@@ -38,37 +38,17 @@ class MoreViewModel : ViewModel() {
             val freeBoardList = db.freeBoardDao().getAllData()
             SeokwangYouthApplication.dbFreeBoardSize = freeBoardList.size
             SeokwangYouthApplication.getMyProfile {
+                if(it?.className == null) {
+                    requestFreeBoardLength()
+                    return@getMyProfile
+                }
                 val classNameArr = it?.className!!.split(",")
                 classNameArr.forEach { className ->
                     val boardList = db.boardDao().getDataByClassName(className)
                     SeokwangYouthApplication.dbBoardSizeMap[className] = boardList.size
                     FirebaseManager.instance.requestClassBoardDataLength(className, object: FirebaseManager.IFirebaseCallback {
                         override fun onValueDataChange(snapshot: DataSnapshot) {
-                            FirebaseManager.instance.requestFreeBoardDataLength(object: FirebaseManager.IFirebaseCallback {
-                                override fun onValueDataChange(snapshot: DataSnapshot) {}
-
-                                override fun onValueCancelled(error: DatabaseError) {}
-
-                                override fun onEventChildAdded(
-                                    snapshot: DataSnapshot,
-                                    previousChildName: String?
-                                ) {}
-
-                                override fun onEventChildChanged(
-                                    snapshot: DataSnapshot,
-                                    previousChildName: String?
-                                ) {}
-
-                                override fun onEventChildRemoved(snapshot: DataSnapshot) {}
-
-                                override fun onEventChildMoved(
-                                    snapshot: DataSnapshot,
-                                    previousChildName: String?
-                                ) {}
-
-                                override fun onEventCancelled(error: DatabaseError) {}
-
-                            })
+                            requestFreeBoardLength()
                         }
 
                         override fun onValueCancelled(error: DatabaseError) {}
@@ -97,6 +77,34 @@ class MoreViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    private fun requestFreeBoardLength() = GlobalScope.launch(Dispatchers.IO) {
+        FirebaseManager.instance.requestFreeBoardDataLength(object: FirebaseManager.IFirebaseCallback {
+            override fun onValueDataChange(snapshot: DataSnapshot) {}
+
+            override fun onValueCancelled(error: DatabaseError) {}
+
+            override fun onEventChildAdded(
+                snapshot: DataSnapshot,
+                previousChildName: String?
+            ) {}
+
+            override fun onEventChildChanged(
+                snapshot: DataSnapshot,
+                previousChildName: String?
+            ) {}
+
+            override fun onEventChildRemoved(snapshot: DataSnapshot) {}
+
+            override fun onEventChildMoved(
+                snapshot: DataSnapshot,
+                previousChildName: String?
+            ) {}
+
+            override fun onEventCancelled(error: DatabaseError) {}
+
+        })
     }
 
     fun isBoardNoti(className: String): Boolean {
