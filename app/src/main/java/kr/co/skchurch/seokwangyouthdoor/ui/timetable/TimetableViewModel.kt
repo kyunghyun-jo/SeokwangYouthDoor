@@ -10,11 +10,13 @@ import com.google.firebase.database.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kr.co.skchurch.seokwangyouthdoor.SeokwangYouthApplication
 import kr.co.skchurch.seokwangyouthdoor.data.AppDatabase
 import kr.co.skchurch.seokwangyouthdoor.data.Constants
 import kr.co.skchurch.seokwangyouthdoor.data.FirebaseConstants
 import kr.co.skchurch.seokwangyouthdoor.data.FirebaseManager
 import kr.co.skchurch.seokwangyouthdoor.data.entities.TimetableEntity
+import kr.co.skchurch.seokwangyouthdoor.utils.Util
 
 class TimetableViewModel() : ViewModel() {
 
@@ -34,7 +36,6 @@ class TimetableViewModel() : ViewModel() {
         }
     }
 
-    private var isReadyForUseFirebase = false
     private fun requestDB() {
         mutableList = mutableListOf()
         if(FirebaseManager.instance.getCurrentUserId() == FirebaseConstants.EMPTY_USER) {
@@ -46,10 +47,17 @@ class TimetableViewModel() : ViewModel() {
             })
             return
         }
-        isReadyForUseFirebase = false
+        if(!Util.isOnline(SeokwangYouthApplication.context!!)) {
+            Handler(Looper.getMainLooper()).post(Runnable {
+                requestCurrentData()
+            })
+            return
+        }
+        Thread(Runnable {
+            db.timetableDao().deleteAllData()
+        }).start()
         FirebaseManager.instance.registerTimetableDB(object: FirebaseManager.IFirebaseCallback{
             override fun onValueDataChange(snapshot: DataSnapshot) {
-                isReadyForUseFirebase = true
                 if(snapshot.childrenCount>0L) {
                     val entity = snapshot.getValue(TimetableEntity::class.java)
                     Logger.d("onDataChange entity : $entity")
@@ -64,16 +72,11 @@ class TimetableViewModel() : ViewModel() {
                 }
             }
 
-            override fun onValueCancelled(error: DatabaseError) {
-                isReadyForUseFirebase = true
-            }
+            override fun onValueCancelled(error: DatabaseError) {}
 
-            override fun onEventChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventChildAdded(snapshot: DataSnapshot, previousChildName: String?) {}
 
             override fun onEventChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                isReadyForUseFirebase = true
                 Logger.d("onChildChanged snapshot : $snapshot / previousChildName : $previousChildName")
                 if(snapshot.key == null || snapshot.key?.isEmpty() == true) return
                 val timetableEntity = snapshot.getValue(TimetableEntity::class.java)!!
@@ -95,25 +98,20 @@ class TimetableViewModel() : ViewModel() {
                 _listData.postValue(mutableList.toList())
             }
 
-            override fun onEventChildRemoved(snapshot: DataSnapshot) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventChildRemoved(snapshot: DataSnapshot) {}
 
-            override fun onEventChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
 
-            override fun onEventCancelled(error: DatabaseError) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventCancelled(error: DatabaseError) {}
 
         })
-
+        /*
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
             Logger.d("Firebase check isReadyForUseFirebase : $isReadyForUseFirebase")
             if(isReadyForUseFirebase) return@Runnable
             requestCurrentData()
         }, Constants.NETWORK_CHECK_DELAY)
+         */
     }
 
     fun requestCurrentData() {

@@ -2,19 +2,24 @@ package kr.co.skchurch.seokwangyouthdoor.ui.memberinfo
 
 import android.os.Handler
 import android.os.Looper
-import com.orhanobut.logger.Logger
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kr.co.skchurch.seokwangyouthdoor.R
 import kr.co.skchurch.seokwangyouthdoor.SeokwangYouthApplication
-import kr.co.skchurch.seokwangyouthdoor.data.*
+import kr.co.skchurch.seokwangyouthdoor.data.AppDatabase
+import kr.co.skchurch.seokwangyouthdoor.data.Constants
+import kr.co.skchurch.seokwangyouthdoor.data.FirebaseConstants
+import kr.co.skchurch.seokwangyouthdoor.data.FirebaseManager
 import kr.co.skchurch.seokwangyouthdoor.data.entities.MemberInfoEntity
 import kr.co.skchurch.seokwangyouthdoor.data.entities.SimpleEntity
+import kr.co.skchurch.seokwangyouthdoor.utils.Util
 
 class MemberCategoryViewModel() : ViewModel() {
 
@@ -34,7 +39,6 @@ class MemberCategoryViewModel() : ViewModel() {
         }
     }
 
-    private var isReadyForUseFirebase = false
     private fun requestDB() {
         mutableList = mutableListOf()
         if(FirebaseManager.instance.getCurrentUserId() == FirebaseConstants.EMPTY_USER) {
@@ -46,9 +50,17 @@ class MemberCategoryViewModel() : ViewModel() {
             })
             return
         }
+        if(!Util.isOnline(SeokwangYouthApplication.context!!)) {
+            Handler(Looper.getMainLooper()).post(Runnable {
+                requestCurrentData()
+            })
+            return
+        }
+        Thread(Runnable {
+            db.memberCategoryDao().deleteAllData()
+        }).start()
         FirebaseManager.instance.registerMemberCategoryDB(object: FirebaseManager.IFirebaseCallback{
             override fun onValueDataChange(snapshot: DataSnapshot) {
-                isReadyForUseFirebase = true
                 if(snapshot.childrenCount > 0L) {
                     val fixedNames = arrayListOf<String>(
                         SeokwangYouthApplication.context!!.getString(R.string.paster),
@@ -71,16 +83,11 @@ class MemberCategoryViewModel() : ViewModel() {
                 }
             }
 
-            override fun onValueCancelled(error: DatabaseError) {
-                isReadyForUseFirebase = true
-            }
+            override fun onValueCancelled(error: DatabaseError) {}
 
-            override fun onEventChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventChildAdded(snapshot: DataSnapshot, previousChildName: String?) {}
 
             override fun onEventChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                isReadyForUseFirebase = true
                 Logger.d("onChildChanged snapshot : $snapshot / previousChildName : $previousChildName")
                 if(snapshot.key == null || snapshot.key?.isEmpty() == true) return
                 val simpleEntity = snapshot.getValue(SimpleEntity::class.java)!!
@@ -103,35 +110,22 @@ class MemberCategoryViewModel() : ViewModel() {
                 }
             }
 
-            override fun onEventChildRemoved(snapshot: DataSnapshot) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventChildRemoved(snapshot: DataSnapshot) {}
 
-            override fun onEventChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
 
-            override fun onEventCancelled(error: DatabaseError) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventCancelled(error: DatabaseError) {}
 
         })
 
         FirebaseManager.instance.registerMemberInfoDB(object: FirebaseManager.IFirebaseCallback{
-            override fun onValueDataChange(snapshot: DataSnapshot) {
-                isReadyForUseFirebase = true
-            }
+            override fun onValueDataChange(snapshot: DataSnapshot) {}
 
-            override fun onValueCancelled(error: DatabaseError) {
-                isReadyForUseFirebase = true
-            }
+            override fun onValueCancelled(error: DatabaseError) {}
 
-            override fun onEventChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventChildAdded(snapshot: DataSnapshot, previousChildName: String?) {}
 
             override fun onEventChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                isReadyForUseFirebase = true
                 Logger.d("MemberInfo onChildChanged snapshot : $snapshot / previousChildName : $previousChildName")
                 if(snapshot.key == null || snapshot.key?.isEmpty() == true) return
                 val memberInfoEntity = snapshot.getValue(MemberInfoEntity::class.java)!!
@@ -152,25 +146,20 @@ class MemberCategoryViewModel() : ViewModel() {
                 }
             }
 
-            override fun onEventChildRemoved(snapshot: DataSnapshot) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventChildRemoved(snapshot: DataSnapshot) {}
 
-            override fun onEventChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
 
-            override fun onEventCancelled(error: DatabaseError) {
-                isReadyForUseFirebase = true
-            }
+            override fun onEventCancelled(error: DatabaseError) {}
 
         })
-
+        /*
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
             Logger.d("Firebase check isReadyForUseFirebase : $isReadyForUseFirebase")
             if(isReadyForUseFirebase) return@Runnable
             requestCurrentData()
         }, Constants.NETWORK_CHECK_DELAY)
+         */
     }
 
     fun requestCurrentData() {

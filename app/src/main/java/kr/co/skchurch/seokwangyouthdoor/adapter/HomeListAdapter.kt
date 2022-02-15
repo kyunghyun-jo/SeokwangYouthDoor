@@ -53,6 +53,11 @@ class HomeListAdapter(val onItemClicked: (Int, HomeEntity) -> Unit): ListAdapter
         return currentList[position].type
     }
 
+    private var isItemFocusable = true
+    fun setItemFocusable(isFocusable: Boolean) {
+        isItemFocusable = isFocusable
+    }
+
     private val ICON_ARR = arrayOf(
         SeokwangYouthApplication.context!!.resources.getDrawable(R.drawable.ic_cake_24, null),
         SeokwangYouthApplication.context!!.resources.getDrawable(R.drawable.ic_event_24, null)
@@ -91,6 +96,7 @@ class HomeListAdapter(val onItemClicked: (Int, HomeEntity) -> Unit): ListAdapter
                         }
                     }
                     binding.itemNew.visibility = if(entity.flagNew == 1) View.VISIBLE else View.GONE
+                    if(!isItemFocusable) binding.root.background = null
                 }
                 else -> {}
             }

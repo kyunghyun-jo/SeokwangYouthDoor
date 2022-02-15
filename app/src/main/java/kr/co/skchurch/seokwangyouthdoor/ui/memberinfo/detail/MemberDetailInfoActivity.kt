@@ -54,6 +54,7 @@ class MemberDetailInfoActivity : AppCompatActivity() {
         refreshView()
 
         adapter = HomeListAdapter(onItemClicked = { _, _ -> })
+        adapter.setItemFocusable(false)
         recyclerView.layoutManager = LinearLayoutManager(this@MemberDetailInfoActivity)
         recyclerView.adapter = adapter
         adapter.submitList(listData.toList())

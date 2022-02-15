@@ -68,10 +68,10 @@ class FreeBoardListAdapter(
             }
             else
                 binding.root.background = binding.root.context.getDrawable(BG_ARR_INCOMMING.random())
-            root.setOnClickListener {
+            itemTitleTxt.setOnClickListener {
                 onItemClicked(adapterPosition, entity)
             }
-            root.setOnLongClickListener {
+            itemTitleTxt.setOnLongClickListener {
                 onItemLongClicked(adapterPosition, entity)
                 true
             }
