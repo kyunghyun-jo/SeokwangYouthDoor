@@ -19,6 +19,7 @@ import kr.co.skchurch.seokwangyouthdoor.data.FirebaseManager
 import kr.co.skchurch.seokwangyouthdoor.data.entities.HomeEntity
 import kr.co.skchurch.seokwangyouthdoor.data.entities.SimpleEntity
 import kr.co.skchurch.seokwangyouthdoor.databinding.FragmentHomeBinding
+import kr.co.skchurch.seokwangyouthdoor.ui.memberinfo.MemberInfoActivity
 import kr.co.skchurch.seokwangyouthdoor.ui.more.calendar.CalendarActivity
 import kr.co.skchurch.seokwangyouthdoor.ui.widget.IDialogCallback
 import kr.co.skchurch.seokwangyouthdoor.ui.widget.MessageDialog
@@ -63,6 +64,15 @@ class HomeFragment : Fragment() {
                 if(itemData.value == FirebaseConstants.PREFIX_EVENT) {
                     val tIntent = Intent(context, CalendarActivity::class.java)
                     startActivity(tIntent)
+                }
+                else if(itemData.value == Constants.NEW_MEMBER_VALUE) {
+                    Logger.d("getNewMemberClassData : ${homeViewModel.getNewMemberClassData()}")
+                    if(homeViewModel.getNewMemberClassData()!=null) {
+                        var tIntent: Intent = Intent(context, MemberInfoActivity::class.java).apply {
+                            putExtra(Constants.EXTRA_MEMBER_INFO, homeViewModel.getNewMemberClassData())
+                        }
+                        startActivity(tIntent)
+                    }
                 }
                 else showMessageDialog(itemData)
             }

@@ -7,7 +7,7 @@ import kr.co.skchurch.seokwangyouthdoor.utils.Util
 
 object Constants {
     const val IS_TEST_MODE = false
-    const val LOG_ENABLE = false
+    const val LOG_ENABLE = true
 
     const val GENDER_MAN = 0
     const val GENDER_WOMAN = 1
@@ -48,6 +48,7 @@ object Constants {
     const val ACTION_CHANGE_VIEWPAGER_ENABLE = "kr.co.skchurch.seokwangyouthdoor.action.CHANGE_VIEWPAGER_ENABLE"
     const val EXTRA_IS_ENABLE = "isEnable"
     const val FREE_BOARD_TITLE = "_freeBoard_"
+    const val NEW_MEMBER_VALUE = "_newMember_"
 
     const val OPTION_ALIGN_CENTER = "_alignCenter_"
 

@@ -13,6 +13,7 @@ import kr.co.skchurch.seokwangyouthdoor.SeokwangYouthApplication
 import kr.co.skchurch.seokwangyouthdoor.data.*
 import kr.co.skchurch.seokwangyouthdoor.data.entities.HomeEntity
 import kr.co.skchurch.seokwangyouthdoor.data.entities.MemberInfoEntity
+import kr.co.skchurch.seokwangyouthdoor.data.entities.SimpleEntity
 import kr.co.skchurch.seokwangyouthdoor.utils.Util
 import java.lang.Runnable
 import java.util.*
@@ -40,6 +41,7 @@ class HomeViewModel() : ViewModel() {
         }
     }
 
+    private var newMemberClassData: SimpleEntity? = null
     private var isReadyForUseFirebase = false
     private fun requestDB() {
         if(FirebaseManager.instance.getCurrentUserId() == FirebaseConstants.EMPTY_USER) {
@@ -50,6 +52,15 @@ class HomeViewModel() : ViewModel() {
             })
             return
         }
+
+        // New member class data
+        val tempList = db.memberCategoryDao().getAllData().filter {
+            it.title == (SeokwangYouthApplication.context?.getString(R.string.new_member)+
+                            SeokwangYouthApplication.context?.getString(R.string.className))
+        }
+        Logger.d("requestDB tempList : $tempList")
+        if(tempList.isNotEmpty()) newMemberClassData = tempList[0]
+
         // Notice Data
         noticeList = mutableListOf()
         noticeList.add(HomeEntity(
@@ -226,7 +237,7 @@ class HomeViewModel() : ViewModel() {
             newMemberList.forEach { newMember ->
                 allEventList.add(HomeEntity(
                     count++, Constants.ITEM_TYPE_NORMAL, newMember.name,
-                    null, null, 0,
+                    Constants.NEW_MEMBER_VALUE, null, 0,
                     Util.getUUID(), Util.getTimestamp()))
             }
         }
@@ -284,6 +295,8 @@ class HomeViewModel() : ViewModel() {
             })
         }
     }
+
+    fun getNewMemberClassData(): SimpleEntity? = newMemberClassData
 
     /*
     private val _text = MutableLiveData<String>().apply {

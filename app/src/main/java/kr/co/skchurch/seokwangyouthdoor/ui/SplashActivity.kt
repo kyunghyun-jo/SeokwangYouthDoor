@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kr.co.skchurch.seokwangyouthdoor.MainActivity
+import kr.co.skchurch.seokwangyouthdoor.R
 import kr.co.skchurch.seokwangyouthdoor.SeokwangYouthApplication
 import kr.co.skchurch.seokwangyouthdoor.data.AppDatabase
 import kr.co.skchurch.seokwangyouthdoor.data.FirebaseConstants
@@ -23,6 +24,7 @@ import kr.co.skchurch.seokwangyouthdoor.ui.memberinfo.MemberCategoryViewModel
 import kr.co.skchurch.seokwangyouthdoor.ui.memberinfo.MemberInfoViewModel
 import kr.co.skchurch.seokwangyouthdoor.ui.more.MoreViewModel
 import kr.co.skchurch.seokwangyouthdoor.ui.more.calendar.CalendarViewModel
+import java.util.*
 
 class SplashActivity : AppCompatActivity() {
 
@@ -41,6 +43,8 @@ class SplashActivity : AppCompatActivity() {
         AppDatabase.context = this
         auth = Firebase.auth
 
+        initLayout()
+
         initAppData()
 
         if(auth.currentUser == null) startApp()
@@ -49,6 +53,18 @@ class SplashActivity : AppCompatActivity() {
                 startApp()
             }, 1000)
         }
+    }
+
+    private fun initLayout() = with(binding) {
+        val cal: Calendar = Calendar.getInstance()
+        cal.timeInMillis = System.currentTimeMillis()
+        val bgDrawableId = when(cal.get(Calendar.MONTH)+1) {
+            in 3..5 -> R.drawable.splash_spring
+            in 6..8 -> R.drawable.splash_summer
+            in 9..11 -> R.drawable.splash_fall
+            else -> R.drawable.splash_winter
+        }
+        bgLayout.setBackgroundResource(bgDrawableId)
     }
 
     private fun initAppData() = GlobalScope.launch(Dispatchers.IO) {
