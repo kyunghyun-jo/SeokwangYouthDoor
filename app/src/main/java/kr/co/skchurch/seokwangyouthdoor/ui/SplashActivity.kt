@@ -3,6 +3,8 @@ package kr.co.skchurch.seokwangyouthdoor.ui
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import com.orhanobut.logger.Logger
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +17,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kr.co.skchurch.seokwangyouthdoor.MainActivity
 import kr.co.skchurch.seokwangyouthdoor.R
-import kr.co.skchurch.seokwangyouthdoor.SeokwangYouthApplication
 import kr.co.skchurch.seokwangyouthdoor.data.AppDatabase
 import kr.co.skchurch.seokwangyouthdoor.data.FirebaseConstants
 import kr.co.skchurch.seokwangyouthdoor.databinding.ActivitySplashBinding
@@ -65,6 +66,25 @@ class SplashActivity : AppCompatActivity() {
             else -> R.drawable.splash_winter
         }
         bgLayout.setBackgroundResource(bgDrawableId)
+
+        val slideSplashAnim: Animation = AnimationUtils.loadAnimation(this.root.context, R.anim.slide_splash_title)
+        splashTitle.startAnimation(slideSplashAnim)
+        /*
+        slideSplashAnim.setAnimationListener(object: Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                Logger.d("onAnimationStart")
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                Logger.d("onAnimationStart")
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+                Logger.d("onAnimationRepeat")
+            }
+
+        })
+         */
     }
 
     private fun initAppData() = GlobalScope.launch(Dispatchers.IO) {

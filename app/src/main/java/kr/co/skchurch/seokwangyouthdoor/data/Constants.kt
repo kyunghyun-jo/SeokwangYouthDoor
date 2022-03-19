@@ -6,7 +6,7 @@ import kr.co.skchurch.seokwangyouthdoor.data.entities.*
 import kr.co.skchurch.seokwangyouthdoor.utils.Util
 
 object Constants {
-    const val IS_TEST_MODE = false
+    const val IS_TEST_MODE = true
     const val LOG_ENABLE = true
 
     const val GENDER_MAN = 0
@@ -97,6 +97,9 @@ object FirebaseConstants {
 
     const val KEY_WORSHIP_NOTICE = "worshipNotice"
     const val KEY_PRAISE_LINK = "praiseLink"
+
+    const val TEST_EMAIL = "test@test.com"
+    const val TEST_PASSWORD = "test01"
 }
 
 enum class MemberType(val id: Int, val value: String) {
@@ -134,55 +137,55 @@ fun generateTestMemberInfoData(): List<MemberInfoEntity> {
         ),
         MemberInfoEntity(
             4, "민영미", Constants.GENDER_WOMAN, "1975.07.05", Constants.MEMBER_TYPE_TEACHER,
-            "010-7777-8888", "M-Tree", "https://picsum.photos/200",
+            "010-7777-8888", "사랑", "https://picsum.photos/200",
             MemberDetailInfoEntity("ccc@ccc.ccc", 55, "교육업", "ddd@ddd.com", "독서", true),
             Util.getUUID(), Util.getTimestamp()
         ),
         MemberInfoEntity(
             5, "윤다정", Constants.GENDER_WOMAN, "1988.08.01", Constants.MEMBER_TYPE_TEACHER,
-            "010-9999-0000", "오렌지", "https://picsum.photos/200",
+            "010-9999-0000", "라임", "https://picsum.photos/200",
             MemberDetailInfoEntity("ddd@ddd.ddd", 28, "회사원", "eee@eee.com", "음악감상", true),
             Util.getUUID(), Util.getTimestamp()
         ),
         MemberInfoEntity(
-            6, "박동흔", Constants.GENDER_MAN, "1997.02.15", Constants.MEMBER_TYPE_TEACHER,
-            "010-1212-3434", "우정,찬양팀", "https://picsum.photos/200",
-            MemberDetailInfoEntity("bbb@bbb.bbb", 21, "신학대", "fff@fff.com", "드럼연주", true),
+            6, "이서연", Constants.GENDER_WOMAN, "1997.02.15", Constants.MEMBER_TYPE_TEACHER,
+            "010-1212-3434", "GOT,찬양팀", "https://picsum.photos/200",
+            MemberDetailInfoEntity("bbb@bbb.bbb", 21, "대학생", "fff@fff.com", "드럼연주", true),
             Util.getUUID(), Util.getTimestamp()
         ),
         MemberInfoEntity(
-            7, "이은성", Constants.GENDER_WOMAN, "2008.08.01", Constants.MEMBER_TYPE_STUDENT,
-            "010-5656-7878", "M-Tree", "https://picsum.photos/200",
-            MemberDetailInfoEntity("ggg@ggg.com", 18, "경기외고", "ggg@ggg.com", "필라테스", true),
+            7, "김태린", Constants.GENDER_WOMAN, "2005.11.14", Constants.MEMBER_TYPE_STUDENT,
+            "010-9136-7191", "사랑", "https://picsum.photos/200",
+            MemberDetailInfoEntity("cassia1114@naver.com", 18, "용호고", null, "산책하기", false),
             Util.getUUID(), Util.getTimestamp()
         ),
         MemberInfoEntity(
-            8, "김기범", Constants.GENDER_MAN, "2009.10.04", Constants.MEMBER_TYPE_STUDENT,
-            "010-9090-1234", "오렌지", "https://picsum.photos/200",
-            MemberDetailInfoEntity("hhh@hhh.com", 17, "경기외고", "hhh@hhh.com", "롤", true),
+            8, "박동혁", Constants.GENDER_MAN, "2005.03.24", Constants.MEMBER_TYPE_STUDENT,
+            "010-9274-7869", "사랑", "https://picsum.photos/200",
+            MemberDetailInfoEntity("dan050324@naver.com", 19, "관양고", null, "웹툰보기, 축구", false),
             Util.getUUID(), Util.getTimestamp()
         ),
         MemberInfoEntity(
-            9, "조기호", Constants.GENDER_MAN, "2008.01.14", Constants.MEMBER_TYPE_STUDENT,
-            "010-1234-5678", "우정", "https://picsum.photos/200",
-            MemberDetailInfoEntity("iii@iii.com", 18, "경기외고", "iii@iii.com", "축구", true),
+            9, "김정제", Constants.GENDER_MAN, "2004.03.06", Constants.MEMBER_TYPE_STUDENT,
+            "010-5338-2247", "사랑,찬양팀", "https://picsum.photos/200",
+            MemberDetailInfoEntity("rlawjdwp04@naver.com", 19, "양명고", null, "농구게임", true),
             Util.getUUID(), Util.getTimestamp()
         ),
         MemberInfoEntity(
             10, "박상훈", Constants.GENDER_MAN, "2007.11.11", Constants.MEMBER_TYPE_STUDENT,
-            "010-5346-7589", "M-Tree", "https://picsum.photos/200",
+            "010-5346-7589", "사랑", "https://picsum.photos/200",
             MemberDetailInfoEntity("jjj@jjj.com", 15, "당정중", "jjj@jjj.com", "농구", false),
             Util.getUUID(), Util.getTimestamp()
         ),
         MemberInfoEntity(
             11, "서민형", Constants.GENDER_WOMAN, "2007.08.10", Constants.MEMBER_TYPE_STUDENT,
-            "010-8754-2644", "오렌지,찬양팀", "https://picsum.photos/200",
+            "010-8754-2644", "라임,찬양팀", "https://picsum.photos/200",
             MemberDetailInfoEntity("kkk@kkk.com", 16, "당정중", "kkk@kkk.com", "배틀그라운드", false),
             Util.getUUID(), Util.getTimestamp()
         ),
         MemberInfoEntity(
             12, "신서윤", Constants.GENDER_WOMAN, "2008.02.22", Constants.MEMBER_TYPE_STUDENT,
-            "010-3546-0548", "우정", "https://picsum.photos/200",
+            "010-3546-0548", "GOT", "https://picsum.photos/200",
             MemberDetailInfoEntity("lll@lll.com", 14, "당정중", "lll@lll.com", "여행가기", false),
             Util.getUUID(), Util.getTimestamp()
         ),
@@ -206,14 +209,14 @@ fun generateTestHomeData(): List<HomeEntity> {
         HomeEntity(1, Constants.ITEM_TYPE_NORMAL, "NOTI_수능 기도회 : 11월1~10일",
                 "여러분도 언젠가 고3이 됩니다. 중1부터 고3까지 6년동안의 세월을 견디고 결실을 맻는 선배들을 위해 기도합니다.", null, 1,
             Util.getUUID(), Util.getTimestamp()),
-        HomeEntity(2, Constants.ITEM_TYPE_NORMAL, "NOTI_전도사님 심방 : 우정반",
+        HomeEntity(2, Constants.ITEM_TYPE_NORMAL, "NOTI_전도사님 심방 : GOT반",
                 "먹고싶은 메뉴 생각해 놓으세요~! 만원의 행복 갑니다~!", null, 1,
             Util.getUUID(), Util.getTimestamp()),
-        HomeEntity(3, Constants.ITEM_TYPE_NORMAL, "CHECK_우정반 : 5명", null, null, 0,
+        HomeEntity(3, Constants.ITEM_TYPE_NORMAL, "CHECK_GOT반 : 5명", null, null, 0,
             Util.getUUID(), Util.getTimestamp()),
-        HomeEntity(4, Constants.ITEM_TYPE_NORMAL, "CHECK_오렌지반 : 3명", null, null, 0,
+        HomeEntity(4, Constants.ITEM_TYPE_NORMAL, "CHECK_라임반 : 3명", null, null, 0,
             Util.getUUID(), Util.getTimestamp()),
-        HomeEntity(5, Constants.ITEM_TYPE_NORMAL, "CHECK_M-Tree반 : 4명", null, null, 0,
+        HomeEntity(5, Constants.ITEM_TYPE_NORMAL, "CHECK_사랑반 : 4명", null, null, 0,
             Util.getUUID(), Util.getTimestamp())
     )
 }
@@ -230,17 +233,17 @@ fun generateTestClassInfo(): List<SimpleEntity> {
             "https://image.shutterstock.com/image-vector/teacher-school-boy-vector-illustration-600w-477275215.jpg",
             Util.getUUID(), Util.getTimestamp()
         ),
-        SimpleEntity(3, "우정",
+        SimpleEntity(3, "GOT",
             "은 모든 아이들이 함께 하나님의 사랑을 노래하는 즐거운 반입니다.",
             "https://image.shutterstock.com/image-photo/group-friends-standing-by-car-600w-275521547.jpg",
             Util.getUUID(), Util.getTimestamp()
         ),
-        SimpleEntity(4, "오렌지",
+        SimpleEntity(4, "라임",
             "은 모든 아이들이 함께 하나님의 사랑을 노래하는 즐거운 반입니다.",
             "https://image.shutterstock.com/image-photo/group-friends-enjoying-party-throwing-600w-565003417.jpg",
             Util.getUUID(), Util.getTimestamp()
         ),
-        SimpleEntity(5, "M-Tree",
+        SimpleEntity(5, "사랑",
             "은 모든 아이들이 함께 하나님의 사랑을 노래하는 즐거운 반입니다.",
             "https://image.shutterstock.com/image-photo/group-happy-friends-having-breakfast-600w-1201677928.jpg",
             Util.getUUID(), Util.getTimestamp()
@@ -258,29 +261,26 @@ fun generateTestClassInfo(): List<SimpleEntity> {
     )
 }
 
+private var timetableIdCount = 0L
 fun generateTestTimetableData(): List<TimetableEntity> {
     return mutableListOf<TimetableEntity>(
-        TimetableEntity(1, "사도신경", null, "다같이",
+        TimetableEntity(++timetableIdCount, "사도신경", null, "다같이",
             Util.getUUID(), Util.getTimestamp()),
-        TimetableEntity(2, "찬양", "하나님의 사랑이 외 3곡", "찬양팀",
+        TimetableEntity(++timetableIdCount, "찬양", "하나님의 사랑이 외 3곡", "찬양팀",
             Util.getUUID(), Util.getTimestamp()),
-        TimetableEntity(3, "간증", "QT 나눔", "박동흔\n선생님",
+        TimetableEntity(++timetableIdCount, "성경봉독", "출애굽기\n3장 1~4절", "심현준\n전도사님",
             Util.getUUID(), Util.getTimestamp()),
-        TimetableEntity(4, "대표기도", null, "김태린\n학생",
+        TimetableEntity(++timetableIdCount, "설교말씀", "말씀으로 모세를\n부르신 하나님", "심현준\n전도사님",
             Util.getUUID(), Util.getTimestamp()),
-        TimetableEntity(5, "성경봉독", "출애굽기\n36장 27절", "심현준\n전도사님",
+        TimetableEntity(++timetableIdCount, "기도", null, "심현준\n전도사님",
             Util.getUUID(), Util.getTimestamp()),
-        TimetableEntity(6, "설교말씀", "헌신은 이렇게", "심현준\n전도사님",
+        TimetableEntity(++timetableIdCount, "헌금", "헌금 찬양\n예배자", "GOT반",
             Util.getUUID(), Util.getTimestamp()),
-        TimetableEntity(7, "기도회", "공통 기도제목", "다같이",
+        TimetableEntity(++timetableIdCount, "광고", null, "심현준\n전도사님",
             Util.getUUID(), Util.getTimestamp()),
-        TimetableEntity(8, "헌금", "헌금 찬양\n하나님의 사랑이", "우정반",
+        TimetableEntity(++timetableIdCount, "주기도문", null, "다같이",
             Util.getUUID(), Util.getTimestamp()),
-        TimetableEntity(9, "주기도문", null, "다같이",
-            Util.getUUID(), Util.getTimestamp()),
-        TimetableEntity(10, "광고", null, "심현준\n전도사님",
-            Util.getUUID(), Util.getTimestamp()),
-        TimetableEntity(11, "공과공부", "말씀 나눔", "반별로",
+        TimetableEntity(++timetableIdCount, "공과공부", "말씀 나눔", "반별로",
             Util.getUUID(), Util.getTimestamp())
     )
 }
@@ -378,9 +378,9 @@ fun generateTestCalendarData(): List<CalendarEntity> {
 fun generateTestBoardData(): List<BoardEntity> {
     return mutableListOf(
         BoardEntity(1, "우와~ 게시판이다!", "aaa@aaa.aaa",
-            "자세한 내용", "우정", "https://picsum.photos/200", Util.getUUID(), Util.getTimestamp()),
+            "자세한 내용", "GOT", "https://picsum.photos/200", Util.getUUID(), Util.getTimestamp()),
         BoardEntity(2, "이거 잘써봅시다~!", "bbb@bbb.bbb",
-            "자세한 내용2", "우정", "https://picsum.photos/200", Util.getUUID(), Util.getTimestamp())
+            "자세한 내용2", "GOT", "https://picsum.photos/200", Util.getUUID(), Util.getTimestamp())
     )
 }
 
