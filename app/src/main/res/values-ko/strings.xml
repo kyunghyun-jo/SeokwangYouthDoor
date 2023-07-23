@@ -13,7 +13,7 @@
     <string name="worship_team_leader">찬양팀장</string>
     <string name="teachers">선생님</string>
     <string name="students">학생</string>
-    <string name="step">보조선생님</string>
+    <string name="staff">보조선생님</string>
     <string name="unknown">모름</string>
     <string name="className">반</string>
     <string name="unknownUser">이름없음</string>
@@ -58,6 +58,8 @@
     <string name="new_member">새신자</string>
     <string name="notice">공지사항</string>
     <string name="last_week_attendance">지난주 출석</string>
+    <string name="last_week_offering">지난주 헌금</string>
+    <string name="next_week_staff">다음주 예배 위원</string>
     <string name="worship_team">찬양팀</string>
     <string name="free_board">청소년부에\n한마디!</string>
     <string name="this_week_events">이번주 행사</string>

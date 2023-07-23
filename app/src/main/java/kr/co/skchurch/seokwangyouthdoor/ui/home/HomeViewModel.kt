@@ -25,6 +25,8 @@ class HomeViewModel() : ViewModel() {
         private const val HEADER_WEEK_EVENT_ID = 1100L
         private const val HEADER_NEW_MEMBER_LIST_ID = 1200L
         private const val HEADER_LAST_WEEK_ATTENDANCE_ID = 1300L
+        private const val HEADER_OFFERING_ID = 1400L
+        private const val HEADER_NEXT_WEEK_STAFF_ID = 1500L
     }
     //private val scope = MainScope()
     private val _listData = MutableLiveData<List<HomeEntity>>()
@@ -33,6 +35,8 @@ class HomeViewModel() : ViewModel() {
     var list: List<HomeEntity>? = null
     var noticeList: MutableList<HomeEntity> = mutableListOf()
     var attendanceList: MutableList<HomeEntity> = mutableListOf()
+    var offeringList: MutableList<HomeEntity> = mutableListOf()
+    var staffList: MutableList<HomeEntity> = mutableListOf()
     var allEventList: MutableList<HomeEntity> = mutableListOf()
 
     init {
@@ -55,8 +59,7 @@ class HomeViewModel() : ViewModel() {
 
         // New member class data
         val tempList = db.memberCategoryDao().getAllData().filter {
-            it.title == (SeokwangYouthApplication.context?.getString(R.string.new_member)+
-                            SeokwangYouthApplication.context?.getString(R.string.className))
+            it.title!!.contains(SeokwangYouthApplication.context?.getString(R.string.new_member)!!)
         }
         Logger.d("requestDB tempList : $tempList")
         if(tempList.isNotEmpty()) newMemberClassData = tempList[0]
@@ -75,6 +78,20 @@ class HomeViewModel() : ViewModel() {
             SeokwangYouthApplication.context!!.getString(R.string.last_week_attendance),
             null, null, 0,
             Util.getUUID(), Util.getTimestamp()))
+        // Offering Data
+        offeringList = mutableListOf()
+        offeringList.add(HomeEntity(
+            HEADER_OFFERING_ID, Constants.ITEM_TYPE_HEADER,
+            SeokwangYouthApplication.context!!.getString(R.string.last_week_offering),
+            null, null, 0,
+            Util.getUUID(), Util.getTimestamp()))
+        // Nextweek Staff Data
+        staffList = mutableListOf()
+        staffList.add(HomeEntity(
+            HEADER_NEXT_WEEK_STAFF_ID, Constants.ITEM_TYPE_HEADER,
+            SeokwangYouthApplication.context!!.getString(R.string.next_week_staff),
+            null, null, 0,
+            Util.getUUID(), Util.getTimestamp()))
         isReadyForUseFirebase = false
 
         FirebaseManager.instance.registerHomeDB(object: FirebaseManager.IFirebaseCallback{
@@ -90,18 +107,20 @@ class HomeViewModel() : ViewModel() {
                         }).start()
                         val tempArr = entity.title!!.split("_")
                         //entity.title = tempArr[1]
-                        if(tempArr[0] == FirebaseConstants.PREFIX_NOTICE) {
-                            if(!noticeList.contains(entity)) noticeList.add(entity)
-                        }
-                        else if(tempArr[0] == FirebaseConstants.PREFIX_CHECK) {
-                            if(!attendanceList.contains(entity)) attendanceList.add(entity)
+                        when(tempArr[0]) {
+                            FirebaseConstants.PREFIX_NOTICE -> if(!noticeList.contains(entity)) noticeList.add(entity)
+                            FirebaseConstants.PREFIX_CHECK -> if(!attendanceList.contains(entity)) attendanceList.add(entity)
+                            FirebaseConstants.PREFIX_OFFERING -> if(!offeringList.contains(entity)) offeringList.add(entity)
+                            FirebaseConstants.PREFIX_STAFF -> if(!staffList.contains(entity)) staffList.add(entity)
                         }
                     }
                     Handler(Looper.getMainLooper()).post(Runnable {
                         val mutableList = mutableListOf<HomeEntity>()
                         mutableList.addAll(noticeList)
+                        mutableList.addAll(staffList)
                         mutableList.addAll(allEventList)
                         mutableList.addAll(attendanceList)
+                        mutableList.addAll(offeringList)
                         _listData.value = mutableList.toList()
                     })
                 }
@@ -272,25 +291,39 @@ class HomeViewModel() : ViewModel() {
                 SeokwangYouthApplication.context!!.getString(R.string.last_week_attendance),
                 null, null, 0,
                 Util.getUUID(), Util.getTimestamp()))
+            // Offering Data
+            offeringList = mutableListOf()
+            offeringList.add(HomeEntity(
+                HEADER_OFFERING_ID, Constants.ITEM_TYPE_HEADER,
+                SeokwangYouthApplication.context!!.getString(R.string.last_week_offering),
+                null, null, 0,
+                Util.getUUID(), Util.getTimestamp()))
+            // Nextweek Staff Data
+            staffList = mutableListOf()
+            staffList.add(HomeEntity(
+                HEADER_NEXT_WEEK_STAFF_ID, Constants.ITEM_TYPE_HEADER,
+                SeokwangYouthApplication.context!!.getString(R.string.next_week_staff),
+                null, null, 0,
+                Util.getUUID(), Util.getTimestamp()))
             db.homeDao().getAllData().forEach { entity ->
                 Logger.d("requestCurrentData entity : $entity")
                 val tempArr = entity.title!!.split("_")
                 //entity.title = tempArr[1]
-                if(tempArr[0] == FirebaseConstants.PREFIX_NOTICE
-                    && !noticeList.contains(entity)) {
-                    noticeList.add(entity)
-                }
-                else if(tempArr[0] == FirebaseConstants.PREFIX_CHECK
-                    && !attendanceList.contains(entity)) {
-                    attendanceList.add(entity)
+                when(tempArr[0]) {
+                    FirebaseConstants.PREFIX_NOTICE -> if(!noticeList.contains(entity)) noticeList.add(entity)
+                    FirebaseConstants.PREFIX_CHECK -> if(!attendanceList.contains(entity)) attendanceList.add(entity)
+                    FirebaseConstants.PREFIX_OFFERING -> if(!offeringList.contains(entity)) offeringList.add(entity)
+                    FirebaseConstants.PREFIX_STAFF -> if(!staffList.contains(entity)) staffList.add(entity)
                 }
             }
             getEventData()
             Handler(Looper.getMainLooper()).post(Runnable {
                 val mutableList = mutableListOf<HomeEntity>()
                 mutableList.addAll(noticeList)
+                mutableList.addAll(staffList)
                 mutableList.addAll(allEventList)
                 mutableList.addAll(attendanceList)
+                mutableList.addAll(offeringList)
                 _listData.value = mutableList.toList()
             })
         }

@@ -1,11 +1,14 @@
 package kr.co.skchurch.seokwangyouthdoor.data
 
+import androidx.lifecycle.asLiveData
 import com.orhanobut.logger.Logger
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.snapshots
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.flow.toList
 import kr.co.skchurch.seokwangyouthdoor.R
 import kr.co.skchurch.seokwangyouthdoor.SeokwangYouthApplication
 import kr.co.skchurch.seokwangyouthdoor.data.entities.*
@@ -29,10 +32,8 @@ class FirebaseManager {
 
     fun getUserName(): String {
         var userName = auth.currentUser!!.displayName
-        if(userName == null || userName.isEmpty())
-            userName = auth.currentUser!!.email
-        if(userName == null || userName.isEmpty())
-            userName = SeokwangYouthApplication.context!!.getString(R.string.unknownUser)
+        if(userName.isNullOrEmpty()) userName = auth.currentUser!!.email
+        if(userName.isNullOrEmpty()) userName = SeokwangYouthApplication.context!!.getString(R.string.unknownUser)
         return userName
     }
 
@@ -217,6 +218,8 @@ class FirebaseManager {
                 val entity = snapshot.getValue(HomeEntity::class.java)
                 Logger.d("[HomeDB]onDataChange entity : $entity")
                 homeDBCallback?.onValueDataChange(snapshot)
+                // uuid와 timestamp를 realdatabase와 동기화시킨다.
+                requestUpdateUUIDAndTimeStamp(FirebaseConstants.TABLE_HOME, homeDB.child(key), entity!!)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -302,6 +305,8 @@ class FirebaseManager {
                 val entity = snapshot.getValue(TimetableEntity::class.java)
                 Logger.d("[TimetableDB]onDataChange entity : $entity")
                 timetableDBCallback?.onValueDataChange(snapshot)
+                // uuid와 timestamp를 realdatabase와 동기화시킨다.
+                requestUpdateUUIDAndTimeStamp(FirebaseConstants.TABLE_TIMETABLE, timetableDB.child(key), entity!!)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -387,6 +392,8 @@ class FirebaseManager {
                 val entity = snapshot.getValue(SimpleEntity::class.java)
                 Logger.d("[MemberCategoryDB]onDataChange entity : $entity")
                 memberCategoryDBCallback?.onValueDataChange(snapshot)
+                // uuid와 timestamp를 realdatabase와 동기화시킨다.
+                requestUpdateUUIDAndTimeStamp(FirebaseConstants.TABLE_MEMBER_CATEGORY, memberCategoryDB.child(key), entity!!)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -487,6 +494,8 @@ class FirebaseManager {
                 val entity = snapshot.getValue(MemberInfoEntity::class.java)
                 Logger.d("[MemberInfoDB]onDataChange entity : $entity")
                 memberInfoDBCallback?.onValueDataChange(snapshot)
+                // uuid와 timestamp를 realdatabase와 동기화시킨다.
+                requestUpdateUUIDAndTimeStamp(FirebaseConstants.TABLE_MEMBER_INFO, memberInfoDB.child(key), entity!!)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -584,6 +593,8 @@ class FirebaseManager {
                 val entity = snapshot.getValue(CalendarEntity::class.java)
                 Logger.d("[CalendarDB]onDataChange entity : $entity")
                 calendarDBCallback?.onValueDataChange(snapshot)
+                // uuid와 timestamp를 realdatabase와 동기화시킨다.
+                requestUpdateUUIDAndTimeStamp(FirebaseConstants.TABLE_CALENDAR, calendarDB.child(key), entity!!)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -670,6 +681,8 @@ class FirebaseManager {
                 val entity = snapshot.getValue(BoardEntity::class.java)
                 Logger.d("[ClassBoardDB]onDataChange entity : $entity")
                 classBoardDBCallback?.onValueDataChange(snapshot)
+                // uuid와 timestamp를 realdatabase와 동기화시킨다.
+                requestUpdateUUIDAndTimeStamp(FirebaseConstants.TABLE_CLASS_BOARD, classBoardDB!!.child(key), entity!!)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -696,6 +709,78 @@ class FirebaseManager {
             }
 
         })
+    }
+
+    private fun requestUpdateUUIDAndTimeStamp(type: String, snapshot: DatabaseReference, entity: Any) {
+        Logger.d("requestUpdateUUIDAndTimeStamp type : $type / snapshot : $snapshot")
+        val user = mutableMapOf<String, Any>()
+        when(type) {
+            FirebaseConstants.TABLE_HOME -> {
+                val tEntity = entity as HomeEntity
+                user[FirebaseConstants.KEY_ID] = tEntity.id!!
+                user[FirebaseConstants.KEY_TYPE] = tEntity.type
+                user[FirebaseConstants.KEY_TITLE] = tEntity.title!!
+                user[FirebaseConstants.KEY_IMAGE_URL] = tEntity.imageUrl!!
+                user[FirebaseConstants.KEY_VALUE] = tEntity.value!!
+                user[FirebaseConstants.KEY_IS_NEW] = tEntity.flagNew
+                user[FirebaseConstants.KEY_UUID] = tEntity.uuid
+                user[FirebaseConstants.KEY_TIMESTAMP] = tEntity.timeStamp
+            }
+            FirebaseConstants.TABLE_TIMETABLE -> {
+                val tEntity = entity as TimetableEntity
+                user[FirebaseConstants.KEY_ID] = tEntity.id!!
+                user[FirebaseConstants.KEY_TITLE] = tEntity.title
+                user[FirebaseConstants.KEY_MIDDLE_VALUE] = tEntity.middleValue!!
+                user[FirebaseConstants.KEY_LAST_VALUE] = tEntity.lastValue
+                user[FirebaseConstants.KEY_UUID] = tEntity.uuid
+                user[FirebaseConstants.KEY_TIMESTAMP] = tEntity.timeStamp
+            }
+            FirebaseConstants.TABLE_MEMBER_CATEGORY -> {
+                val tEntity = entity as SimpleEntity
+                user[FirebaseConstants.KEY_ID] = tEntity.id!!
+                user[FirebaseConstants.KEY_TITLE] = tEntity.title!!
+                user[FirebaseConstants.KEY_VALUE] = tEntity.value!!
+                user[FirebaseConstants.KEY_IMAGE_URL] = tEntity.imageUrl!!
+                user[FirebaseConstants.KEY_UUID] = tEntity.uuid
+                user[FirebaseConstants.KEY_TIMESTAMP] = tEntity.timeStamp
+            }
+            FirebaseConstants.TABLE_MEMBER_INFO -> {
+                val tEntity = entity as MemberInfoEntity
+                user[FirebaseConstants.KEY_ID] = tEntity.id!!
+                user[FirebaseConstants.KEY_NAME] = tEntity.name
+                user[FirebaseConstants.KEY_GENDER] = tEntity.gender
+                user[FirebaseConstants.KEY_BIRTH] = tEntity.birth
+                user[FirebaseConstants.KEY_TYPE] = tEntity.type
+                user[FirebaseConstants.KEY_PHONE_NUMBER] = tEntity.phoneNumber.orEmpty()
+                user[FirebaseConstants.KEY_CLASSNAME] = tEntity.className.orEmpty()
+                user[FirebaseConstants.KEY_IMAGE_URL] = tEntity.imageUrl!!
+                user[FirebaseConstants.KEY_DETAIL_INFO] = tEntity.detailInfo!!
+                user[FirebaseConstants.KEY_UUID] = tEntity.uuid
+                user[FirebaseConstants.KEY_TIMESTAMP] = tEntity.timeStamp
+            }
+            FirebaseConstants.TABLE_CALENDAR -> {
+                val tEntity = entity as CalendarEntity
+                user[FirebaseConstants.KEY_ID] = tEntity.id!!
+                user[FirebaseConstants.KEY_TITLE] = tEntity.title
+                user[FirebaseConstants.KEY_DETAIL_INFO] = tEntity.detailInfo.orEmpty()
+                user[FirebaseConstants.KEY_DATE] = tEntity.date
+                user[FirebaseConstants.KEY_SCHEDULE_TYPE] = tEntity.scheduleType
+                user[FirebaseConstants.KEY_UUID] = tEntity.uuid
+                user[FirebaseConstants.KEY_TIMESTAMP] = tEntity.timeStamp
+            }
+            FirebaseConstants.TABLE_CLASS_BOARD, FirebaseConstants.TABLE_FREE_BOARD -> {
+                val tEntity = entity as BoardEntity
+                user[FirebaseConstants.KEY_ID] = tEntity.id!!
+                user[FirebaseConstants.KEY_TITLE] = tEntity.title
+                user[FirebaseConstants.KEY_AUTHOR] = tEntity.author
+                user[FirebaseConstants.KEY_DESCRIPTION] = tEntity.description
+                user[FirebaseConstants.KEY_CLASSNAME] = tEntity.className!!
+                user[FirebaseConstants.KEY_IMAGE_URL] = tEntity.imageUrl!!
+                user[FirebaseConstants.KEY_UUID] = tEntity.uuid
+                user[FirebaseConstants.KEY_TIMESTAMP] = tEntity.timeStamp
+            }
+        }
+        snapshot.updateChildren(user)
     }
 
     fun requestFreeBoardDataLength(callback: IFirebaseCallback) {
@@ -789,6 +874,8 @@ class FirebaseManager {
                 val entity = snapshot.getValue(BoardEntity::class.java)
                 Logger.d("[FreeBoardDB]onDataChange entity : $entity")
                 freeBoardDBCallback?.onValueDataChange(snapshot)
+                // uuid와 timestamp를 realdatabase와 동기화시킨다.
+                requestUpdateUUIDAndTimeStamp(FirebaseConstants.TABLE_FREE_BOARD, freeBoardDB.child(key), entity!!)
             }
 
             override fun onCancelled(error: DatabaseError) {

@@ -13,7 +13,7 @@
     <string name="worship_team_leader">Worship Team Leader</string>
     <string name="teachers">Teachers</string>
     <string name="students">Students</string>
-    <string name="step">Step</string>
+    <string name="staff">Staff</string>
     <string name="unknown">Unknown</string>
     <string name="className">Class</string>
     <string name="unknownUser">UnknownUser</string>
@@ -58,6 +58,8 @@
     <string name="new_member">New Member</string>
     <string name="notice">Notice</string>
     <string name="last_week_attendance">Last Week Attendance</string>
+    <string name="last_week_offering">Last Week Offering</string>
+    <string name="next_week_staff">Next week staff</string>
     <string name="worship_team">Worship team</string>
     <string name="free_board">Free Board</string>
     <string name="this_week_events">This week events</string>

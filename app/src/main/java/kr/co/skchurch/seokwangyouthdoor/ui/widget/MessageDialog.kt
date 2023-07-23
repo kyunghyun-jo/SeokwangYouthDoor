@@ -16,7 +16,7 @@ import kr.co.skchurch.seokwangyouthdoor.databinding.FragmentMessageDialogBinding
 import kr.co.skchurch.seokwangyouthdoor.utils.Util
 
 class MessageDialog(
-        private val _title: String,
+        private val _title: String?,
         private val _listData: List<SimpleEntity>,
         private val _callback: IDialogCallback,
         private val _btnData: List<Pair<Int, String>>? = null
@@ -91,8 +91,12 @@ class MessageDialog(
         refresh()
     }
 
-    fun setTitle(title: String) {
-        binding.dialogTitle.text = title
+    fun setTitle(title: String?) {
+        if(title == null) binding.dialogTitle.visibility = View.INVISIBLE
+        else {
+            binding.dialogTitle.visibility = View.VISIBLE
+            binding.dialogTitle.text = title
+        }
     }
 
     private fun refresh() {

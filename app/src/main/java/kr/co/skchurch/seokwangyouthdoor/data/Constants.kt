@@ -17,7 +17,7 @@ object Constants {
     const val MEMBER_TYPE_WORSHIP_TEAM_LEADER = 2
     const val MEMBER_TYPE_TEACHER = 3
     const val MEMBER_TYPE_STUDENT = 4
-    const val MEMBER_TYPE_STEP = 5
+    const val MEMBER_TYPE_STAFF = 5
     const val MEMBER_TYPE_UNKNOWN = 99
 
     const val SCHEDULE_TYPE_EVENT = 1
@@ -70,6 +70,8 @@ object FirebaseConstants {
     const val USER_ID = "userId"
     const val PREFIX_NOTICE = "NOTI"
     const val PREFIX_CHECK = "CHECK"
+    const val PREFIX_OFFERING = "OFFERING"
+    const val PREFIX_STAFF = "STAFF"
     const val PREFIX_EVENT = "_EVENT_"
 
     const val KEY_ITEM = "item"
@@ -108,7 +110,7 @@ enum class MemberType(val id: Int, val value: String) {
     WORSHIP_TEAM_LEADER(Constants.MEMBER_TYPE_WORSHIP_TEAM_LEADER, SeokwangYouthApplication.context!!.getString(R.string.worship_team_leader)),
     TEACHER(Constants.MEMBER_TYPE_TEACHER, SeokwangYouthApplication.context!!.getString(R.string.teachers)),
     STUDENT(Constants.MEMBER_TYPE_STUDENT, SeokwangYouthApplication.context!!.getString(R.string.students)),
-    STEP(Constants.MEMBER_TYPE_STEP, SeokwangYouthApplication.context!!.getString(R.string.step)),
+    STAFF(Constants.MEMBER_TYPE_STAFF, SeokwangYouthApplication.context!!.getString(R.string.staff)),
     UNKNOWN(Constants.MEMBER_TYPE_UNKNOWN, SeokwangYouthApplication.context!!.getString(R.string.unknown))
 }
 

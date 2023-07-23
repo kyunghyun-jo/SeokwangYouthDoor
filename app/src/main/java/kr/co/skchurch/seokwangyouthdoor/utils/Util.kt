@@ -34,7 +34,7 @@ object Util {
         if (birthCalendar[Calendar.MONTH] * 100 +
             birthCalendar[Calendar.DAY_OF_MONTH] > currentMonth * 100 + currentDay
         ) age--
-        return age+1
+        return age
     }
 
     lateinit var displayMetrics: Pair<Int, Int>
@@ -97,4 +97,6 @@ object Util {
         }
         return false
     }
+
+    fun getRealTxt(text: String) = text.replace("\\n", "\n")
 }
